@@ -33,6 +33,7 @@ type Content struct {
 	Text        string `json:"text,omitempty"`        // Response body sent from the server or loaded from the browser cache. This field is populated with textual content only. The text field is either HTTP decoded text or a encoded (e.g. "base64") representation of the response body. Leave out this field if the information is not available.
 	Encoding    string `json:"encoding,omitempty"`    // Encoding used for response text field e.g "base64". Leave out this field if the text field is HTTP decoded (decompressed & unchunked), than trans-coded from its original character set into UTF-8.
 	Comment     string `json:"comment,omitempty"`     // A comment provided by the user or the application.
+	File	    string `json:"_file,omitempty"`	  // Name of file containing response data. Used when HAR is set to attach and download all assets.
 }
 
 // Cookie contains list of all cookies (used in [Request] and [Response]
