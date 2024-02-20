@@ -1842,6 +1842,8 @@ func easyjsonC5a4559bDecodeGithubComChromedpCdprotoHar13(in *jlexer.Lexer, out *
 			out.Encoding = string(in.String())
 		case "comment":
 			out.Comment = string(in.String())
+		case "_file":
+			out.File = string(in.String())
 		default:
 			in.SkipRecursive()
 		}
@@ -1885,6 +1887,11 @@ func easyjsonC5a4559bEncodeGithubComChromedpCdprotoHar13(out *jwriter.Writer, in
 		const prefix string = ",\"comment\":"
 		out.RawString(prefix)
 		out.String(string(in.Comment))
+	}
+	if in.File != "" {
+		const prefix string = ",\"_file\":"
+		out.RawString(prefix)
+		out.String(string(in.File))
 	}
 	out.RawByte('}')
 }
