@@ -148,6 +148,7 @@ type PostData struct {
 	Params   []*Param `json:"params"`            // List of posted parameters (in case of URL encoded parameters).
 	Text     string   `json:"text"`              // Plain text posted data
 	Comment  string   `json:"comment,omitempty"` // A comment provided by the user or the application.
+    File     string   `json:"_file,omitempty"`
 }
 
 // Request contains detailed info about performed request.
