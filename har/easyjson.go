@@ -1511,6 +1511,17 @@ func easyjsonC5a4559bDecodeGithubComChromedpCdprotoHar10(in *jlexer.Lexer, out *
 			out.Connection = string(in.String())
 		case "comment":
 			out.Comment = string(in.String())
+		case "_securityDetails":
+			if in.IsNull() {
+				in.Skip()
+				out.SecurityDetails = nil
+			} else {
+				if out.SecurityDetails == nil {
+					out.SecurityDetails = new(SecurityDetails)
+				}
+				(*out.SecurityDetails).UnmarshalEasyJSON(in)
+			}
+
 		default:
 			in.SkipRecursive()
 		}
@@ -2132,4 +2143,54 @@ func (v *Cache) UnmarshalJSON(data []byte) error {
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
 func (v *Cache) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjsonC5a4559bDecodeGithubComChromedpCdprotoHar15(l, v)
+}
+
+func (v *SecurityDetails) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjsonDecodeSecurityDetails(&r, v)
+	return r.Error()
+}
+
+func (v *SecurityDetails) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonDecodeSecurityDetails(l, v)
+}
+
+func easyjsonDecodeSecurityDetails(in *jlexer.Lexer, out *SecurityDetails) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeFieldName(false)
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "protocol":
+			out.Protocol = string(in.String())
+		case "subjectName":
+			out.SubjectName = string(in.String())
+		case "issuer":
+			out.Issuer = string(in.String())
+		case "validFrom":
+			out.ValidFrom = float64(in.Float64())
+		case "validTo":
+			out.ValidTo = float64(in.Float64())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
 }

@@ -33,7 +33,7 @@ type Content struct {
 	Text        string `json:"text,omitempty"`        // Response body sent from the server or loaded from the browser cache. This field is populated with textual content only. The text field is either HTTP decoded text or a encoded (e.g. "base64") representation of the response body. Leave out this field if the information is not available.
 	Encoding    string `json:"encoding,omitempty"`    // Encoding used for response text field e.g "base64". Leave out this field if the text field is HTTP decoded (decompressed & unchunked), than trans-coded from its original character set into UTF-8.
 	Comment     string `json:"comment,omitempty"`     // A comment provided by the user or the application.
-	File	    string `json:"_file,omitempty"`	  // Name of file containing response data. Used when HAR is set to attach and download all assets.
+	File        string `json:"_file,omitempty"`       // Name of file containing response data. Used when HAR is set to attach and download all assets.
 }
 
 // Cookie contains list of all cookies (used in [Request] and [Response]
@@ -67,16 +67,17 @@ type Creator struct {
 //
 // See: https://chromedevtools.github.io/devtools-protocol/tot/HAR#type-Entry
 type Entry struct {
-	Pageref         string    `json:"pageref,omitempty"`         // Reference to the parent page. Leave out this field if the application does not support grouping by pages.
-	StartedDateTime string    `json:"startedDateTime"`           // Date and time stamp of the request start (ISO 8601 - YYYY-MM-DDThh:mm:ss.sTZD).
-	Time            float64   `json:"time"`                      // Total elapsed time of the request in milliseconds. This is the sum of all timings available in the timings object (i.e. not including -1 values) .
-	Request         *Request  `json:"request"`                   // Detailed info about the request.
-	Response        *Response `json:"response"`                  // Detailed info about the response.
-	Cache           *Cache    `json:"cache"`                     // Info about cache usage.
-	Timings         *Timings  `json:"timings"`                   // Detailed timing info about request/response round trip.
-	ServerIPAddress string    `json:"serverIPAddress,omitempty"` // IP address of the server that was connected (result of DNS resolution).
-	Connection      string    `json:"connection,omitempty"`      // Unique ID of the parent TCP/IP connection, can be the client or server port number. Note that a port number doesn't have to be unique identifier in cases where the port is shared for more connections. If the port isn't available for the application, any other unique connection ID can be used instead (e.g. connection index). Leave out this field if the application doesn't support this info.
-	Comment         string    `json:"comment,omitempty"`         // A comment provided by the user or the application.
+	Pageref         string           `json:"pageref,omitempty"`          // Reference to the parent page. Leave out this field if the application does not support grouping by pages.
+	StartedDateTime string           `json:"startedDateTime"`            // Date and time stamp of the request start (ISO 8601 - YYYY-MM-DDThh:mm:ss.sTZD).
+	Time            float64          `json:"time"`                       // Total elapsed time of the request in milliseconds. This is the sum of all timings available in the timings object (i.e. not including -1 values) .
+	Request         *Request         `json:"request"`                    // Detailed info about the request.
+	Response        *Response        `json:"response"`                   // Detailed info about the response.
+	Cache           *Cache           `json:"cache"`                      // Info about cache usage.
+	Timings         *Timings         `json:"timings"`                    // Detailed timing info about request/response round trip.
+	ServerIPAddress string           `json:"serverIPAddress,omitempty"`  // IP address of the server that was connected (result of DNS resolution).
+	Connection      string           `json:"connection,omitempty"`       // Unique ID of the parent TCP/IP connection, can be the client or server port number. Note that a port number doesn't have to be unique identifier in cases where the port is shared for more connections. If the port isn't available for the application, any other unique connection ID can be used instead (e.g. connection index). Leave out this field if the application doesn't support this info.
+	Comment         string           `json:"comment,omitempty"`          // A comment provided by the user or the application.
+	SecurityDetails *SecurityDetails `json:"_securityDetails,omitempty"` // Security details for the request.
 }
 
 // HAR parent container for HAR log.
@@ -148,7 +149,7 @@ type PostData struct {
 	Params   []*Param `json:"params"`            // List of posted parameters (in case of URL encoded parameters).
 	Text     string   `json:"text"`              // Plain text posted data
 	Comment  string   `json:"comment,omitempty"` // A comment provided by the user or the application.
-    File     string   `json:"_file,omitempty"`
+	File     string   `json:"_file,omitempty"`
 }
 
 // Request contains detailed info about performed request.
@@ -196,4 +197,12 @@ type Timings struct {
 	Receive float64 `json:"receive"`           // Time required to read entire response from the server (or cache).
 	Ssl     float64 `json:"ssl,omitempty"`     // Time required for SSL/TLS negotiation. If this field is defined then the time is also included in the connect field (to ensure backward compatibility with HAR 1.1). Use -1 if the timing does not apply to the current request.
 	Comment string  `json:"comment,omitempty"` // A comment provided by the user or the application.
+}
+
+type SecurityDetails struct {
+	Protocol    string  `json:"protocol"`
+	SubjectName string  `json:"subjectName"`
+	Issuer      string  `json:"issuer"`
+	ValidFrom   float64 `json:"validFrom"`
+	ValidTo     float64 `json:"validTo"`
 }
